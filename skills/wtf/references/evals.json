@@ -48,6 +48,54 @@
         "Explains the 0ms delay mechanism intuitively",
         "Tests mental model with a predict-the-console-output micro-puzzle"
       ]
+    },
+    {
+      "id": 5,
+      "name": "k8s-vs-serverless-executive",
+      "prompt": "wtf is Kubernetes and why is my team asking for a $200k migration from Lambda? explain like I am VP of Product",
+      "audience": "Executive / VP of Product",
+      "assertions": [
+        "Calibrates tone to executive altitude focusing on total cost of ownership, blast radius, and team velocity",
+        "Avoids low-level container internals (cgroups, kubelet, etcd) in favor of operational tradeoffs",
+        "Includes a clear visual comparison diagram (Mermaid quadrant or tradeoff chart)",
+        "Concludes Piece 1 with an active check on operational workload characteristics"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "python-gil-multithreading",
+      "prompt": "wtf is Python GIL? I added 8 threads to my CPU-bound loop and it ran SLOWER than 1 thread?!",
+      "audience": "Backend Python Developer",
+      "assertions": [
+        "Outlines a clear roadmap distinguishing CPU-bound vs I/O-bound threading",
+        "Includes a visual diagram (Mermaid state/timeline or ASCII) showing thread contention and mutex lock bouncing",
+        "Explains the OS context-switching overhead and cache trashing mechanism clearly",
+        "Ends Piece 1 with an active check on whether multiprocessing vs multithreading applies"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "raft-consensus-split-brain",
+      "prompt": "wtf is Raft consensus and how does it prevent split-brain during network partition?",
+      "audience": "Distributed Systems Architect",
+      "assertions": [
+        "Presents a rigorous 3-4 piece roadmap covering leader election, term numbers, and log replication",
+        "Includes a visual network topology diagram (Mermaid) showing 3 vs 2 node partition and majority quorum",
+        "Explains the mathematical quorum rule (N/2 + 1) without hand-waving",
+        "Ends Piece 1 with an active check on partition voting behavior"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "cpu-cache-lines-false-sharing",
+      "prompt": "wtf is CPU false sharing and why did my multi-threaded struct benchmark tank?",
+      "audience": "Systems / C++ / Rust Engineer",
+      "assertions": [
+        "Roadmap breaks down L1/L2 cache lines, MESI cache coherency, and cache bouncing",
+        "Includes a visual memory layout diagram (ASCII or Mermaid) showing 64-byte cache line alignment",
+        "Explains why adjacent memory writes invalidate neighbor cores' caches",
+        "Ends Piece 1 with an active puzzle on struct padding or memory alignment"
+      ]
     }
   ]
 }
