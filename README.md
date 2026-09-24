@@ -59,12 +59,13 @@ skills/
 ├── docs/
 │   └── wtf.md               # Deep dive guide & usage documentation
 ├── skills/
-│   ├── _template/           # Starter template for authoring new skills
-│   │   └── SKILL.md
 │   └── wtf/                 # Walk Through Foundations (Piece-by-Piece Learning)
 │       ├── SKILL.md
 │       └── references/
 │           └── evals.json   # Test cases & assertion benchmarks
+├── templates/
+│   └── skill-template/      # Starter template for authoring new skills
+│       └── SKILL_TEMPLATE.md
 ├── .gitignore
 ├── LICENSE
 ├── package.json
@@ -73,13 +74,14 @@ skills/
 
 ## Adding a New Skill
 
-1. Duplicate `skills/_template` into `skills/<new-skill-name>`.
-2. Edit `SKILL.md` with:
+1. Duplicate `templates/skill-template/` into `skills/<new-skill-name>/`.
+2. Rename `SKILL_TEMPLATE.md` to `SKILL.md`.
+3. Edit `SKILL.md` with:
    - YAML frontmatter (`name` and `description`).
    - Clear trigger conditions under `## When to Use`.
    - Step-by-step workflow and guidelines.
-3. Add an entry to the catalog in `README.md` and in `.claude-plugin/plugin.json`.
-4. Open a pull request or commit to main.
+4. Add an entry to the catalog in `README.md` and in `.claude-plugin/plugin.json`.
+5. Open a pull request or commit to main.
 
 ---
 
