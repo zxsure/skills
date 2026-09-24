@@ -1,0 +1,53 @@
+{
+  "description": "Evaluation benchmarks for the WTF (Walk Through Foundations) skill, verifying visual graphs, progressive pacing, audience calibration, and active checks.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "db-index-fundamentals",
+      "prompt": "wtf is a database index",
+      "audience": "Software Engineer",
+      "assertions": [
+        "Provides a 3-4 step roadmap before deep diving",
+        "Includes a visual diagram (Mermaid flowchart or ASCII tree) illustrating B-Tree search",
+        "Uses an intuitive physical analogy (e.g. alphabetized book, library catalog)",
+        "Ends Piece 1 with an active micro-check question and pauses for user response"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "git-rebase-vs-merge",
+      "prompt": "wtf is git rebase and why do seniors love it so much?",
+      "audience": "Junior / Mid Developer",
+      "assertions": [
+        "Outlines a concise piece-by-piece learning roadmap",
+        "Includes a git branch/commit graph showing replay of commits onto a new base",
+        "Clarifies that commit SHAs change during rebase",
+        "Concludes the first piece with a thought experiment regarding public branches"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "kafka-streaming-eli5",
+      "prompt": "wtf is Apache Kafka explain like I am 10",
+      "audience": "Age 10 / Complete Beginner",
+      "assertions": [
+        "Uses child-accessible physical metaphor (conveyor belt, notebook, post office)",
+        "Zero impenetrable jargon (no unexplained zookeeper/kraft/broker terminology)",
+        "Includes a clear visual diagram showing producer -> log -> consumer",
+        "Presents an active check checking understanding of the conveyor belt"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "event-loop-javascript",
+      "prompt": "/wtf is the JavaScript event loop? why doesn't setTimeout(fn, 0) run immediately?",
+      "audience": "Frontend Developer",
+      "assertions": [
+        "Breaks down Call Stack, Web APIs, and Task Queue in a clear roadmap",
+        "Features a visual sequence or flow diagram showing queue ordering",
+        "Explains the 0ms delay mechanism intuitively",
+        "Tests mental model with a predict-the-console-output micro-puzzle"
+      ]
+    }
+  ]
+}
