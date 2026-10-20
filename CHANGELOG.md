@@ -5,6 +5,15 @@ All notable changes to the `skills` repository will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-10-20
+
+### Changed
+- Upgraded `interactive-html` to the **Intent-Driven Adaptive Architecture**:
+  - **Question-to-Paradigm Routing**: Dynamically routes each user prompt to its natural interactive medium (Live Bi-Directional Workbench, Interactive Graph/DAG Sandbox, 60fps Particle Stage + Live Oscilloscope, Head-to-Head Workload Arena, Direct-Manipulation 2D/Matrix Playground, or Interactive Wire & Fault Debugger) without cookie-cutter UI chrome.
+  - **Composable Micro-Engine Toolkit (`references/html-blueprint.md`)**: Added reusable zero-dependency primitives for Retina `<canvas>` setup, 60fps spring physics, weighted Bezier attention/packet arcs, live softmax/temperature calculators, and scrolling telemetry oscilloscopes.
+  - **Domain-Matched Visual Palettes**: Added Editorial Lab Notebook (`ciechanow.ski` style), Cyber-Telemetry Command Center, Developer Git/Compiler Workbench, and Blueprint CAD themes.
+  - Updated `docs/interactive-html.md`, `skills/interactive-html/references/evals.json`, and linked `wtf` capstones to `interactive-html`.
+
 ## [1.1.0] - 2026-10-20
 
 ### Added

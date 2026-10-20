@@ -1,55 +1,51 @@
 {
-  "description": "Evaluation benchmarks for the interactive-html (Answer Me With Interactive HTML) skill, verifying self-contained single-file HTML generation, interactive time scrubbers, parameter sliders, live state inspectors, in-page prediction challenges, and sandbox compliance.",
+  "description": "Evaluation benchmarks for the interactive-html (Answer Me With Interactive HTML) skill, verifying intent-driven adaptive layouts, domain-native interactive controls, real vanilla-JS micro-algorithms, 60fps canvas/SVG simulations, and sandbox compliance without cookie-cutter templates.",
   "evals": [
     {
       "id": 1,
-      "name": "btree-vs-fullscan-interactive-html",
-      "prompt": "answer me with interactive html: how does a database B+ Tree index find a row so much faster than a Full Table Scan?",
+      "name": "git-rebase-vs-merge-dag-sandbox",
+      "prompt": "answer me with interactive html: what is the difference between git merge and git rebase, and why does rebase rewrite commit hashes?",
       "audience": "Software Engineer",
       "assertions": [
-        "Writes a self-contained single-file .html document inside the project workspace (e.g. .interactive-html/) and never to /tmp",
-        "Includes a step-by-step Time Scrubber (Prev, Play/Pause, Next, Reset, range input) allowing reversible traversal of the search steps",
-        "Includes at least one interactive parameter control (e.g. target key selector, dataset size slider, or B+ Tree vs Full Scan comparison toggle)",
-        "Renders an inline SVG or DOM visual stage highlighting visited tree nodes and discarded branches alongside a live read-count State Inspector",
-        "Includes an in-page interactive prediction challenge with immediate feedback",
-        "Uses zero external fetch() calls or unverified third-party CDNs"
+        "Uses a Graph/DAG Command Sandbox topology tailored to Git version history rather than a generic slide viewer",
+        "Provides domain-native Git controls (e.g., '+ Commit on main', '+ Commit on feature', 'git merge', 'git rebase main', and 'Reset/Undo')",
+        "Maintains a real commit DAG in JS and visually animates how rebase clones feature commits (e.g. C3 -> C3') onto the tip of main with new SHA hashes while dimming orphaned commits",
+        "Shows live branch ref pointers (HEAD, main, feature) and explains the Golden Rule of Rebasing",
+        "Writes a self-contained .html file inside the project workspace (never /tmp) with zero external network calls"
       ]
     },
     {
       "id": 2,
-      "name": "js-event-loop-stepper-html",
-      "prompt": "/interactive-html explain the JavaScript event loop and why Promise.resolve().then() runs before setTimeout(fn, 0)",
-      "audience": "Frontend Developer",
+      "name": "transformer-attention-temperature-workbench",
+      "prompt": "/interactive-html explain how Transformer Self-Attention and LLM Temperature / Top-K sampling work",
+      "audience": "AI / Software Engineer",
       "assertions": [
-        "Generates an interactive HTML debugger showing the Call Stack, Web APIs, Microtask Queue, and Macrotask Queue",
-        "Provides a step scrubber that moves items visually between Call Stack, Microtask Queue, and Macrotask Queue tick by tick",
-        "Displays synchronized code line highlighting and live console output at each step",
-        "Supports switching between preset code snippets or toggling microtask vs macrotask scheduling",
-        "Concludes with an interactive predict-the-console-output challenge inside the HTML page"
+        "Uses a Live Token & Probability Workbench topology tailored to LLMs",
+        "Renders an interactive prompt ribbon where clicking or hovering any token draws weighted Bezier self-attention arcs to related context words",
+        "Includes live sliders for Temperature (T) and Top-K / Top-P that compute real softmax probabilities exp(logit / T) and dynamically resize next-token probability bars",
+        "Allows switching prompt sentences or resolving ambiguous pronouns (e.g. 'it' referring to 'trophy' vs 'suitcase')"
       ]
     },
     {
       "id": 3,
-      "name": "token-bucket-rate-limiter-eli5",
-      "prompt": "explain how a Token Bucket API rate limiter works like I'm 10 years old, answer me with interactive html",
-      "audience": "Age 10 / Complete Beginner",
+      "name": "token-bucket-rate-limiter-60fps-lab",
+      "prompt": "explain how a Token Bucket API rate limiter works and how it compares to Fixed Window, answer me with interactive html",
+      "audience": "Backend Engineer",
       "assertions": [
-        "Uses a child-friendly physical metaphor (e.g. arcade token bucket, ticket dispenser, water bucket) with zero unexplained jargon",
-        "Includes live interactive sliders for refill rate and bucket capacity plus a button to fire burst requests",
-        "Animates accepted requests versus rejected (429 / bounced) requests visually in real time",
-        "Includes a kid-friendly in-page prediction question checking what happens when a burst exceeds the bucket size"
+        "Uses a 60fps High-DPI Canvas Particle Simulation paired with a live scrolling telemetry oscilloscope chart",
+        "Includes continuous sliders for Arrival Rate, Refill Rate, and Bucket Capacity plus a Hold-to-Flood Burst trigger",
+        "Includes a simultaneous multi-lane comparison showing how Fixed Window suffers from boundary stampedes while Token Bucket absorbs valid bursts"
       ]
     },
     {
       "id": 4,
-      "name": "raft-consensus-split-brain-sim",
-      "prompt": "build an interactive html explanation of Raft leader election and what happens during a network partition (split brain)",
-      "audience": "System Architect",
+      "name": "btree-vs-fullscan-storage-studio",
+      "prompt": "answer me with interactive html: how does a database B+ Tree index find a row so much faster than a Full Table Scan, and when does the query planner ignore it?",
+      "audience": "Database / Software Engineer",
       "assertions": [
-        "Renders a multi-node cluster stage showing Follower, Candidate, and Leader states with term numbers and heartbeat/vote messages",
-        "Provides an interactive fault-injection toggle or preset to partition the network into minority vs majority quorums",
-        "Shows live per-node state (currentTerm, votedFor, commitIndex) in a State Inspector panel",
-        "Explains why a minority partition cannot commit writes using an interactive challenge"
+        "Renders a side-by-side Disk Page I/O Race comparing sequential heap page scans against a 3-hop B+ Tree traversal",
+        "Includes a live 'Bring Your Own Keys' B+ Tree insertion sandbox that demonstrates 50/50 leaf page splits and separator promotion",
+        "Includes an interactive Query Planner selectivity cost-crossover curve showing when Sequential Scan beats random Index I/O"
       ]
     }
   ]

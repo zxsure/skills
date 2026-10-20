@@ -1,55 +1,62 @@
 ---
 name: interactive-html
-description: Answer the user with a self-contained, interactive HTML explanation ("Explorable Explanation") instead of static text. Use whenever the user says "answer me with interactive html", "explain X in interactive html", "/interactive-html <topic>", "build an interactive playground/visualizer for X", or wants sliders, step-by-step time scrubbers, live state inspection, and interactive challenges to understand any concept, algorithm, system, or code.
+description: Answer the user with a self-contained, interactive HTML explanation ("Explorable Explanation") instead of static text. Use whenever the user says "answer me with interactive html", "explain X in interactive html", "/interactive-html <topic>", "build an interactive playground/visualizer for X", or wants a custom interactive playground tailored to the exact concept, algorithm, system, math, or code they asked about.
 ---
 
 # Interactive HTML — Answer Me With Interactive HTML
 
-> *"Don't just tell me how it works in static prose—give me knobs to turn, time to scrub, and state I can see mutate live."*
+> *"Every question has its own natural interactive medium. A Git question needs a live commit-graph terminal; a Transformer question needs clickable token attention beams and a temperature softmax slider; a rate-limiter needs 60fps particle physics; a CSS/SQL question needs a live editable workbench. Never force two different topics into the same UI shell."*
 
-When a user invokes **`interactive-html`** (or asks to *"answer me with interactive html"*), your primary deliverable is a **self-contained, single-file interactive `.html` micro-application** that turns an abstract concept, algorithm, protocol, or code path into a hands-on **Explorable Explanation** (in the spirit of Bret Victor, Bartosz Ciechanowski, and Nicky Case).
-
-Never output a static HTML article or a wall of text wrapped in `<div>` tags. Every generated page must be a **live simulation and interactive visual debugger**.
+When a user invokes **`interactive-html`** (or asks to *"answer me with interactive html"*), your deliverable is a **self-contained, single-file interactive `.html` micro-application** whose **layout topology, visual metaphor, and interactive controls are custom-designed around the exact topic and question the user asked**.
 
 ---
 
-## When to Use
+## 🚫 The Golden Anti-Boilerplate Rule
 
-Activate this skill whenever:
-- The user says *"answer me with interactive html"*, *"explain `<topic>` in interactive html"*, or invokes `/interactive-html <topic>`.
-- The user asks for an *"interactive explainer"*, *"interactive visualizer"*, *"explorable explanation"*, or *"HTML playground"* for an algorithm, system architecture, bug reproduction, or math/physics concept.
-- Static diagrams (like Mermaid or ASCII) are not enough because understanding requires **scrubbing through steps in time**, **adjusting parameters via sliders**, or **toggling fault conditions** to watch state change dynamically.
-
----
-
-## The Core Philosophy (Explorable Explanations)
-
-1. **Interactive Over Static**: If the user doesn't have to click, drag, scrub, or toggle something within 3 seconds of opening the page, the page has failed.
-2. **Reversible Time (The Time Scrubber)**: Learners understand complex mechanisms best when they can step **backward** and **forward** (`Prev Step ←` / `Next Step →`) through an execution trace at their own pace.
-3. **Direct Manipulation (The Control Surface)**: Expose key system variables as `<input type="range">` sliders, toggle switches, or scenario preset buttons (*"Normal Load"*, *"Cache Miss"*, *"Split-Brain"*) that immediately recompute and animate the visual stage.
-4. **Synchronized Mental Models**: Pair the visual stage (SVG/Canvas/DOM diagram) side-by-side with a live **State Inspector** (variables, queues, memory slots, metrics) and step-by-step commentary.
-5. **Active Prediction (The In-Page Gate)**: Conclude the page with an interactive **"Predict What Happens"** challenge card that gives instant visual feedback and invites the user to verify the answer using the simulator controls above.
-6. **Audience Calibration**:
-   - **ELI5 / Beginner**: Everyday physical metaphors (conveyor belts, traffic lanes, post offices) with friendly visual icons.
-   - **Software Engineer**: Call stacks, pointers, packet payloads, lock queues, and synchronized code highlights.
-   - **System Architect / Manager**: Throughput vs. latency curves, blast radius, cost/capacity sliders, and failover toggles.
+**NEVER use a fixed template or mandatory UI chrome across different topics.**
+- Do **not** put a `Prev / Play / Next` button bar on a topic that should be a live editable playground, a 60fps physics simulation, or an interactive graph builder.
+- Do **not** put "Mission Cards" or "Quiz Cards" on a page unless gamified missions genuinely fit the user's request.
+- Do **not** reuse the same 2-column split or 3-section layout for every prompt. **Form must follow the question's specific mechanics.**
 
 ---
 
-## The 4-Part Interactive HTML Architecture
+## Step 1: Route the User's Question to Its Natural Interactive Paradigm
 
-Every generated `.html` file **must** contain these four wired-together sections (see [`references/html-blueprint.md`](references/html-blueprint.md) for the starter template and CSS/JS patterns):
+Before writing any HTML/CSS/JS, diagnose **what kind of understanding** the user's prompt requires, and pick (or blend) the matching **Interactive Paradigm**:
 
-1. **Header & Intuition Hook**:
-   - Title, audience badge, and a 1–2 sentence plain-English mental model of *why* this concept exists.
-2. **Control Surface (Top or Sidebar)**:
-   - **Time Scrubber**: `⏮ Reset`, `◀ Prev`, `▶ Play / ⏸ Pause`, `Next ▶`, plus a timeline scrubber (`<input type="range">`) bound to a deterministic `steps[]` state array, with keyboard support (`ArrowLeft` / `ArrowRight` / `Space`).
-   - **Parameter Sliders / Scenario Presets**: At least 1–3 interactive parameters or preset buttons that dynamically alter the simulation.
-3. **Interactive Visual Stage + Live State Inspector (Main Split Grid)**:
-   - **Left / Center (The Stage)**: Inline `<svg>` or `<canvas>` or animated DOM nodes with clear color-coded states (idle, active, mutated, error/blocked) and smooth CSS transitions.
-   - **Right (State Inspector & Step Narrative)**: Live readout of internal variables/queues/registers at the current step + a concise explanation of *what just happened and why*.
-4. **In-Page Prediction Challenge (Footer Card)**:
-   - A multiple-choice or interactive *"What happens if..."* puzzle with instant explanation feedback and a **"Try It on the Stage ↑"** button that configures the simulator to demonstrate the exact scenario.
+| User's Question / Topic Shape | Best-Fit Interactive Paradigm & Layout | Domain-Native Controls (No Generic Buttons!) |
+| :--- | :--- | :--- |
+| **1. Syntax, Query, Layout, or Text Transformation**<br/>*(Regex, SQL Joins, CSS Flexbox/Grid, ASTs, Bitwise ops, JWTs, Cron)* | **Live Bi-Directional Workbench**<br/>Split editor + live visual stage that re-evaluates on every keystroke or pill toggle | Editable input string/code/query, clickable syntax tokens that highlight matching output regions, live Venn/box/bit-field morphing |
+| **2. Graph, Tree, or Version History Mutation**<br/>*(Git Rebase vs. Merge, B+ Trees, Red-Black Trees, DOM diffing, GC Mark-and-Sweep)* | **Interactive Graph / DAG Construction Sandbox**<br/>Central interactive canvas + command palette that executes real operations on the graph | Domain verbs (`git commit`, `git rebase main`, `git merge`, `+ Insert Key`, `Run GC Sweep`), animated node cloning/re-parenting, Undo/History stack |
+| **3. Continuous Traffic, Physics, Queues, or Control Loops**<br/>*(Rate limiters, TCP congestion, Load balancers, Thread pools, Springs, PID controllers)* | **60fps Real-Time Simulation + Live Oscilloscope**<br/>High-DPI `<canvas>` particle/fluid engine + scrolling time-series telemetry chart | Continuous sliders (arrival rate, latency, damping), **Hold-to-Flood Burst** trigger, click-on-canvas to drop obstacles/kill workers |
+| **4. Architecture / Algorithm Tradeoff Comparison**<br/>*(B-Tree vs. LSM, Kafka vs. RabbitMQ, CSR vs. SSR, QuickSort vs. MergeSort, Mutex vs. RWLock)* | **Head-to-Head Workload Arena**<br/>Shared workload generator at top feeding 2–3 simultaneous side-by-side engines below | Workload shaper presets (*95% Writes*, *Spiky Traffic*, *Slow Network*, *Nearly Sorted*), simultaneous race trigger, live cost/latency meters |
+| **5. AI/ML, Math, Geometry, or Signal Processing**<br/>*(Transformer Self-Attention, Softmax Temperature, Gradient Descent, Bezier curves, Fourier)* | **Direct-Manipulation 2D/Matrix Playground**<br/>Interactive vector/matrix/token canvas where mouse drag or token hover drives live math | Clickable prompt tokens with attention-weight beams, live Temperature `T` slider reshaping probability bars, draggable 2D handles (`P0..P3`) |
+| **6. Multi-Party Protocol, Handshake, or Code Execution Trace**<br/>*(TLS 1.3, OAuth2 PKCE, Event Loop, Raft Election, DNS Resolution, Repo Request Flow)* | **Interactive Sequence / Time-Travel Debugger**<br/>Swimlane or architecture stage with animated Bezier packets + synchronized code/wire inspector | Scrubber timeline, **Fault Injection toggles** (*Drop Packet*, *Tamper Signature*, *Partition Node*), clickable wire frames |
+
+---
+
+## Step 2: Tailor the Visual Aesthetic to the Domain
+
+Never use a single default stylesheet. Match the typography, color palette, and surface texture to the subject matter (see [`references/html-blueprint.md`](references/html-blueprint.md) for CSS token sets and canvas/SVG utilities):
+
+- **Editorial Paper Essay (`ciechanow.ski` / `Distill.pub` style)**: Warm cream `#faf7f0`, serif display headers, high-contrast dark interactive figures embedded inside a readable narrative flow. Great for math, physics, geometry, and foundational CS concepts.
+- **Developer Terminal / Git / Compiler Workbench**: Crisp dark slate/carbon `#090d16`, monospace command pills, syntax-highlighted token chips, and smooth SVG DAG/AST transitions. Great for Git, SQL, compilers, and JS runtime internals.
+- **Cyber-Telemetry Command Center**: Deep obsidian `#050811` with glowing 60fps `<canvas>` particle streams, scrolling emerald/coral oscilloscope waveforms, and hardware-style sliders. Great for networking, distributed systems, and concurrency.
+- **AI / Neural Visualizer Studio**: Clean high-contrast studio surface with interactive token ribbons, weighted bezier attention arcs, and live probability distribution histograms. Great for LLMs, embeddings, and ML math.
+
+---
+
+## Step 3: Build Real Domain Mechanics (Not Canned Slides)
+
+To make the interactive HTML feel genuinely alive and intelligent:
+1. **Implement the Real Micro-Algorithm in Vanilla JS**:
+   - Explaining **Git Rebase**? Maintain an actual commit DAG array (`commits[]`, `branches{}`) so clicking `Commit on feature`, `Commit on main`, and `git rebase main` creates real `C3'`, `C4'` rebased commits with new hashes while fading the orphaned commits!
+   - Explaining **Transformer Attention & Temperature**? Store real attention matrices and raw logits so clicking any word re-draws the attention beams and dragging the `Temperature (T = 0.1 → 2.0)` slider computes real `exp(z_i / T) / Σ exp(z_j / T)` probabilities live!
+   - Explaining **SQL Joins**? Run the actual `INNER`, `LEFT`, `RIGHT`, `FULL OUTER`, or `CROSS JOIN` over two editable mini-tables and animate the matching/null-padded rows!
+2. **Use Motion That Explains Causality**:
+   - Every visual transition should answer *"Where did this piece of data come from, and where did it go?"* Use curved SVG Bezier paths with `<animateMotion>`, CSS spring transitions (`cubic-bezier(0.34, 1.56, 0.64, 1)`), or 60fps `<canvas>` interpolation.
+3. **Give Immediate Tactile Affordances**:
+   - Make interactive elements look obviously clickable/draggable (hover lift, cursor cues, subtle pulsing halos on draggable handles, and clear inline hints like *"👆 Click any word below"* or *"🖱️ Drag control points"*).
 
 ---
 
@@ -57,33 +64,10 @@ Every generated `.html` file **must** contain these four wired-together sections
 
 1. **Single-File, Zero-Build Vanilla Stack**:
    - Write a complete `<!DOCTYPE html>` file with inline `<style>` and `<script>`.
-   - Use CSS Custom Properties (`--bg`, `--surface`, `--text`, `--accent`, etc.) supporting both dark and light modes (`prefers-color-scheme`), plus the native system font stack (`system-ui, -apple-system, sans-serif` and `ui-monospace, monospace`).
-2. **Zero External Network Dependencies by Default**:
-   - Prefer pure inline SVG, HTML5 Canvas, and vanilla ES6+ JavaScript so the page works 100% offline and inside strict agent sandboxes without CORS or 404 failures.
-   - Never call `fetch()` against external APIs or load Google Fonts.
-   - If a third-party library (e.g., D3, Chart.js, Three.js) is genuinely needed in sandboxed environments like Optimus Desktop, load it **only** from `https://unpkg.ase.apple.com/PACKAGE@VERSION/path` and verify the URL returns HTTP 200 first.
-3. **Output Path Hygiene (Never Write to `/tmp`)**:
+   - Prefer pure HTML5 `<canvas>`, inline `<svg>`, CSS Grid/Flexbox, and vanilla ES6+ JavaScript so it works 100% offline with zero CORS failures.
+   - Never call `fetch()` against external APIs or load Google Fonts. If a third-party library is needed in Optimus Desktop, load it only from `https://unpkg.ase.apple.com/PACKAGE@VERSION/path` after verifying HTTP 200.
+2. **Output Path Hygiene (Never Write to `/tmp`)**:
    - Sandboxed project previewers require the file to live **inside the project directory** (never `/tmp`).
-   - If the user specifies a path, write there.
-   - If the user does **not** specify a path, write to **`.interactive-html/<topic-slug>.html`** relative to the current workspace root (so temporary learning artifacts stay organized and out of the project root).
-4. **Auto-Preview Across Agent Environments**:
-   - **If the `preview` tool is available** (e.g., Optimus Desktop): Call `preview` with `filePath: ".interactive-html/<topic-slug>.html"` immediately after writing or updating the file so it renders live in the user's Review panel. Never run `open` or launch an external browser when `preview` is present.
-   - **If no `preview` tool is available** (e.g., CLI-only environments): Print the relative path clearly and tell the user how to open it locally.
-
----
-
-## Step-by-Step Workflow
-
-1. **Calibrate & Model the State Machine**:
-   - Identify the target concept and audience level.
-   - Design a deterministic state model:
-     - Define 4–7 discrete execution steps (`steps[]`) that tell a clear story from initial state → key transitions → edge case/gotcha → resolution.
-     - Define 1–3 tunable parameters or scenario presets that recompute or branch the simulation.
-2. **Consult the Blueprint**:
-   - Read [`references/html-blueprint.md`](references/html-blueprint.md) if you need the responsive CSS variables, SVG diagram helpers, keyboard-accessible stepper controller, or prediction card markup.
-3. **Write the Self-Contained `.html` File**:
-   - Save the file to `.interactive-html/<topic-slug>.html` (or the user's requested path).
-   - Verify all event listeners (`input`, `click`, `keydown`) are bound and the initial render (`render()`) runs on load without console errors.
-4. **Render & Summarize**:
-   - Call the `preview` tool (when available) on the saved file path.
-   - Keep your chat response concise (3–5 sentences): state the core intuition, list the interactive controls the user can play with in the preview, and invite them to try the in-page prediction challenge or ask for deeper scenarios.
+   - If the user does **not** specify a path, write to **`.interactive-html/<topic-slug>.html`** relative to the current workspace root.
+3. **Auto-Preview Across Agent Environments**:
+   - **If the `preview` tool is available**: Call `preview` with `filePath: ".interactive-html/<topic-slug>.html"` immediately after writing or updating the file so it renders live in the user's Review panel. Never run `open` or launch an external browser when `preview` is present.
