@@ -1,7 +1,7 @@
 {
   "name": "zxsure-skills",
-  "version": "1.0.1",
-  "description": "Skills for AI coding agents: WTF (Walk Through Foundations) and more.",
+  "version": "1.1.0",
+  "description": "Skills for AI coding agents: WTF (Walk Through Foundations), Interactive HTML (Answer Me With Interactive HTML), and more.",
   "author": {
     "name": "zxsure",
     "email": "zxsure@gmail.com",
@@ -15,9 +15,13 @@
     "eli5",
     "education",
     "learning",
-    "visual-diagrams"
+    "visual-diagrams",
+    "interactive-html",
+    "explorable-explanations",
+    "html-explainer"
   ],
   "skills": [
-    "./skills/wtf"
+    "./skills/wtf",
+    "./skills/interactive-html"
   ]
 }

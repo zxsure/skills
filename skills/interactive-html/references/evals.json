@@ -1,0 +1,56 @@
+{
+  "description": "Evaluation benchmarks for the interactive-html (Answer Me With Interactive HTML) skill, verifying self-contained single-file HTML generation, interactive time scrubbers, parameter sliders, live state inspectors, in-page prediction challenges, and sandbox compliance.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "btree-vs-fullscan-interactive-html",
+      "prompt": "answer me with interactive html: how does a database B+ Tree index find a row so much faster than a Full Table Scan?",
+      "audience": "Software Engineer",
+      "assertions": [
+        "Writes a self-contained single-file .html document inside the project workspace (e.g. .interactive-html/) and never to /tmp",
+        "Includes a step-by-step Time Scrubber (Prev, Play/Pause, Next, Reset, range input) allowing reversible traversal of the search steps",
+        "Includes at least one interactive parameter control (e.g. target key selector, dataset size slider, or B+ Tree vs Full Scan comparison toggle)",
+        "Renders an inline SVG or DOM visual stage highlighting visited tree nodes and discarded branches alongside a live read-count State Inspector",
+        "Includes an in-page interactive prediction challenge with immediate feedback",
+        "Uses zero external fetch() calls or unverified third-party CDNs"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "js-event-loop-stepper-html",
+      "prompt": "/interactive-html explain the JavaScript event loop and why Promise.resolve().then() runs before setTimeout(fn, 0)",
+      "audience": "Frontend Developer",
+      "assertions": [
+        "Generates an interactive HTML debugger showing the Call Stack, Web APIs, Microtask Queue, and Macrotask Queue",
+        "Provides a step scrubber that moves items visually between Call Stack, Microtask Queue, and Macrotask Queue tick by tick",
+        "Displays synchronized code line highlighting and live console output at each step",
+        "Supports switching between preset code snippets or toggling microtask vs macrotask scheduling",
+        "Concludes with an interactive predict-the-console-output challenge inside the HTML page"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "token-bucket-rate-limiter-eli5",
+      "prompt": "explain how a Token Bucket API rate limiter works like I'm 10 years old, answer me with interactive html",
+      "audience": "Age 10 / Complete Beginner",
+      "assertions": [
+        "Uses a child-friendly physical metaphor (e.g. arcade token bucket, ticket dispenser, water bucket) with zero unexplained jargon",
+        "Includes live interactive sliders for refill rate and bucket capacity plus a button to fire burst requests",
+        "Animates accepted requests versus rejected (429 / bounced) requests visually in real time",
+        "Includes a kid-friendly in-page prediction question checking what happens when a burst exceeds the bucket size"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "raft-consensus-split-brain-sim",
+      "prompt": "build an interactive html explanation of Raft leader election and what happens during a network partition (split brain)",
+      "audience": "System Architect",
+      "assertions": [
+        "Renders a multi-node cluster stage showing Follower, Candidate, and Leader states with term numbers and heartbeat/vote messages",
+        "Provides an interactive fault-injection toggle or preset to partition the network into minority vs majority quorums",
+        "Shows live per-node state (currentTerm, votedFor, commitIndex) in a State Inspector panel",
+        "Explains why a minority partition cannot commit writes using an interactive challenge"
+      ]
+    }
+  ]
+}
