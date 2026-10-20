@@ -11,7 +11,7 @@ Real engineering with AI agents requires discipline, shared language, and sanity
 | Skill | Trigger / Type | What It Does | Guide |
 | :--- | :--- | :--- | :--- |
 | **[`wtf`](skills/wtf/SKILL.md)** | User-invoked (`/wtf <topic>`, `wtf is X`) | **Walk Through Foundations**: Deconstructs any complex concept, technology, or cursed code piece by piece using **visual diagrams (Mermaid & ASCII)** and **audience-calibrated analogies (ELI5-style)**. Guides the learner through bite-sized lessons with interactive checks at each step until complete mastery. | [Read Guide](docs/wtf.md) |
-| **[`interactive-html`](skills/interactive-html/SKILL.md)** | User-invoked (`/interactive-html <topic>`, `"answer me with interactive html"`) | **Answer Me With Interactive HTML**: Builds a self-contained, single-file interactive `.html` micro-app (**Explorable Explanation**) with a **reversible time scrubber**, **parameter sliders**, **live SVG/Canvas state inspector**, and **in-page prediction challenges**—rendered directly in your preview panel. | [Read Guide](docs/interactive-html.md) |
+| **[`interactive-html`](skills/interactive-html/SKILL.md)** | User-invoked (`/interactive-html <topic>`, `"answer me with interactive html"`) | **Answer Me With Interactive HTML**: Builds a bespoke, self-contained `.html` interactive playground (**Explorable Explanation**) whose layout, visual aesthetic, and controls adapt dynamically to your question—from **60fps `<canvas>` particle physics & live oscilloscopes** to **interactive Git DAG sandboxes**, **head-to-head algorithm race arenas**, and **live LLM attention/softmax workbenches**—rendered directly in your preview panel. | [Read Guide](docs/interactive-html.md) |
 
 *(More skills coming soon — or contribute your own!)*
 

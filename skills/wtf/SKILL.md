@@ -86,6 +86,7 @@ Once all pieces are mastered:
    - **When to Use**: 2–3 golden rules.
    - **Top Pitfalls / Gotchas**: 2–3 common mistakes to avoid.
    - **Recommended Next Deep Dive**: Suggested primary source doc, RFC, or practical exercise.
+   - **Interactive Playground Bridge (`interactive-html`)**: Offer a 1-line invitation: *"Want to scrub through this live with sliders and animated packets? Run `/interactive-html <topic>` to launch an interactive visual simulator."*
 
 ---
 
