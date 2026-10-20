@@ -11,6 +11,7 @@ Real engineering with AI agents requires discipline, shared language, and sanity
 | Skill | Trigger / Type | What It Does | Guide |
 | :--- | :--- | :--- | :--- |
 | **[`wtf`](skills/wtf/SKILL.md)** | User-invoked (`/wtf <topic>`, `wtf is X`) | **Walk Through Foundations**: Deconstructs any complex concept, technology, or cursed code piece by piece using **visual diagrams (Mermaid & ASCII)** and **audience-calibrated analogies (ELI5-style)**. Guides the learner through bite-sized lessons with interactive checks at each step until complete mastery. | [Read Guide](docs/wtf.md) |
+| **[`interactive-html`](skills/interactive-html/SKILL.md)** | User-invoked (`/interactive-html <topic>`, `"answer me with interactive html"`) | **Answer Me With Interactive HTML**: Builds a self-contained, single-file interactive `.html` micro-app (**Explorable Explanation**) with a **reversible time scrubber**, **parameter sliders**, **live SVG/Canvas state inspector**, and **in-page prediction challenges**—rendered directly in your preview panel. | [Read Guide](docs/interactive-html.md) |
 
 *(More skills coming soon — or contribute your own!)*
 
@@ -42,10 +43,12 @@ cd skills
 # For Claude Code / Open Agents:
 mkdir -p ~/.agents/skills
 ln -s "$(pwd)/skills/wtf" ~/.agents/skills/wtf
+ln -s "$(pwd)/skills/interactive-html" ~/.agents/skills/interactive-html
 
 # For Optimus:
 mkdir -p ~/.config/optimus/skills
 ln -s "$(pwd)/skills/wtf" ~/.config/optimus/skills/wtf
+ln -s "$(pwd)/skills/interactive-html" ~/.config/optimus/skills/interactive-html
 ```
 
 ---
@@ -57,8 +60,14 @@ skills/
 ├── .claude-plugin/
 │   └── plugin.json          # Claude Code plugin manifest
 ├── docs/
-│   └── wtf.md               # Deep dive guide & usage documentation
+│   ├── interactive-html.md  # Deep dive guide for Interactive HTML
+│   └── wtf.md               # Deep dive guide for WTF
 ├── skills/
+│   ├── interactive-html/    # Answer Me With Interactive HTML (Explorable Explanations)
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │       ├── evals.json       # Test cases & assertion benchmarks
+│   │       └── html-blueprint.md # Zero-dependency HTML/CSS/JS starter architecture
 │   └── wtf/                 # Walk Through Foundations (Piece-by-Piece Learning)
 │       ├── SKILL.md
 │       └── references/
