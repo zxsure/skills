@@ -31,8 +31,9 @@ flowchart LR
    - Whenever a topic processes queries, strings, keys, arrays, or rules, users can both click curated presets and **type their own live input** to watch the real vanilla-JS micro-algorithm evaluate it in real time.
 3. **Tangle-Style Scrubbable Inline Prose**:
    - Narrative paragraphs embed draggable inline numbers (`[ 16 words ⟷ ]`) so readers can scrub parameters directly inside the text.
-4. **Mandatory 5-Point Self-Refinement Gate**:
-   - Before delivering the file, the agent audits Causal Connectivity, Macro Topology Diversity, Live Input Support, 60fps Retina Polish, and Sandbox Compliance.
+4. **Automated Acceptance Testing & 100-Point Craft Rubric**:
+   - Every generated `.html` file is validated by [`skills/interactive-html/scripts/verify-html.mjs`](../skills/interactive-html/scripts/verify-html.mjs) against the **5 Hard Gates** and **100-Point Craft Rubric** in [`skills/interactive-html/references/acceptance-criteria.md`](../skills/interactive-html/references/acceptance-criteria.md) (requiring `5/5` Hard Gates and a score `>= 85/100`).
+   - Run `npm test` (or `node skills/interactive-html/scripts/verify-html.mjs .interactive-html/<file>.html`) to verify JS syntax (`vm.Script`), sandbox safety, multi-modal interactivity (`>= 3` modalities), Retina HiDPI scaling, and causal state wiring.
 
 ---
 

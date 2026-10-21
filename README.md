@@ -65,9 +65,12 @@ skills/
 ├── skills/
 │   ├── interactive-html/    # Answer Me With Interactive HTML (Explorable Explanations)
 │   │   ├── SKILL.md
-│   │   └── references/
-│   │       ├── evals.json       # Test cases & assertion benchmarks
-│   │       └── html-blueprint.md # Zero-dependency HTML/CSS/JS starter architecture
+│   │   ├── references/
+│   │   │   ├── acceptance-criteria.md # 5 Hard Gates & 100-Point Craft Rubric
+│   │   │   ├── evals.json             # Test cases & assertion benchmarks
+│   │   │   └── html-blueprint.md      # Macro topologies & micro-engine toolkit
+│   │   └── scripts/
+│   │       └── verify-html.mjs        # Automated CLI acceptance verifier & scorer
 │   └── wtf/                 # Walk Through Foundations (Piece-by-Piece Learning)
 │       ├── SKILL.md
 │       └── references/

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.1] - 2026-10-21
 
+### Added
+- Added formal **Acceptance Criteria & 100-Point Quantitative Craft Rubric** (`skills/interactive-html/references/acceptance-criteria.md`) defining 5 zero-tolerance Hard Gates (HG-1..HG-5) and a 100-point scoring rubric (`>= 85/100` required to pass).
+- Added zero-dependency **Automated CLI Acceptance Verifier & Test Runner** (`skills/interactive-html/scripts/verify-html.mjs`, wired to `npm test`) that compiles inline `<script>` blocks via `vm.Script`, audits sandbox safety, measures interactive modality diversity (`>= 3` modalities), checks HiDPI/motion craft, and scores causal state wiring.
+
 ### Changed
 - Refined `interactive-html` with **End-to-End Causal Wiring, Macro Page Topologies & Tangle Scrubbable Prose**:
   - **End-to-End Causal Wiring**: Mandated a single shared reactive pipeline state across multi-stage explainers (e.g., mutating document chunk size/overlap in Stage 1 dynamically updates Stage 2's 2D vector embeddings and Stage 3's assembled prompt and cited answer).

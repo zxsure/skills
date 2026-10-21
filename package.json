@@ -6,6 +6,9 @@
     "type": "git",
     "url": "https://github.com/zxsure/skills"
   },
+  "scripts": {
+    "test": "node skills/interactive-html/scripts/verify-html.mjs --self-test"
+  },
   "license": "MIT",
   "keywords": [
     "ai-agent",

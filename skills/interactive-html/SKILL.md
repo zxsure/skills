@@ -50,15 +50,22 @@ Before writing any code, match the user's question to its **Interactive Paradigm
 
 ---
 
-## Step 3: Mandatory 5-Point Self-Refinement Audit (Before Concluding)
+## Step 3: Mandatory Acceptance Verification & Self-Refinement Loop
 
-After writing the initial `.html` file, **audit your own work against these 5 gates** and edit the file if any check falls short:
+Every generated `.html` file must satisfy the **5 Hard Gates** and achieve a **Craft Score ≥ 85 / 100** defined in [`references/acceptance-criteria.md`](references/acceptance-criteria.md):
 
-1. **Causal Connectivity Check**: *If the user changes a control in Section 1, does it visibly affect Section 2/3, or are the widgets disconnected islands?* (If disconnected, wire them to a shared state!)
-2. **Macro Topology Check**: *Does the page look like a bespoke app/essay for this specific topic, or did I fall back into generic stacked dark cards?*
-3. **Live Input Check**: *Can the user type or drag custom input (a custom query, custom key, custom text, or free 2D coordinates) in addition to clicking presets?*
-4. **60fps / Tactile Polish Check**: *Are `<canvas>` elements Retina-scaled (`devicePixelRatio`), do draggable/clickable elements have clear hover/active affordances and cursor cues, and do transitions use smooth spring/Bezier motion?*
-5. **Sandbox & Preview Check**: *Is the file saved inside `.interactive-html/<topic-slug>.html` (never `/tmp`) with zero external network calls, and rendered live via `preview`?*
+1. **Run the Automated Acceptance Verifier**:
+   - Execute the bundled zero-dependency verifier against your generated file:
+     ```bash
+     node <path-to-skill>/scripts/verify-html.mjs .interactive-html/<topic-slug>.html
+     ```
+2. **Verify All 5 Hard Gates & 5-Point Craft Audit**:
+   - **HG-1 (Self-Contained HTML5)** & **HG-3 (Sandbox Safe)**: Valid `<!DOCTYPE html>`, inline `<style>`/`<script>`, inside `.interactive-html/` (never `/tmp`), zero external `fetch()` or Google Fonts.
+   - **HG-2 (Zero JS Syntax Errors)**: Compiles cleanly via `vm.Script` with zero runtime console errors.
+   - **HG-4 (Multi-Modal Interactivity, `≥ 3` Modalities)**: Combines at least 3 distinct input modalities (range sliders, live text/number inputs, direct 2D `<canvas>`/`<svg>` pointer manipulation, Tangle `.scrub-num` inline numbers, preset/action buttons, keyboard shortcuts).
+   - **HG-5 (Dynamic Visual Stage & Retina Polish)**: Uses `devicePixelRatio` HiDPI scaling on `<canvas>`, spring/Bezier motion, and **End-to-End Causal Wiring** across stages.
+3. **Self-Refine on Failure**:
+   - If `verify-html.mjs` reports any Hard Gate failure or a score `< 85/100`, apply its printed remediation suggestions and re-run the verifier until it passes before finishing.
 
 ---
 
