@@ -1,58 +1,87 @@
-# Interactive HTML Modular Toolkit (v4 — Topic-Adaptive Layouts & Micro-Engines)
+# Interactive HTML Visual-First Blueprint (v6 — Single Spacious Stage & Object-Permanence Motion)
 
-> **DO NOT COPY-PASTE A SINGLE FIXED PAGE SKELETON.**
-> Every topic has a unique conceptual shape. Pick the **Layout Topology**, **Aesthetic Token Set**, and **Micro-Engine Primitives** below that best fit the user's exact question, and assemble a bespoke interactive experience.
-
----
-
-## 1. Pick the Layout Topology That Matches the Question
-
-### Topology A: The Live Bi-Directional Workbench
-*Use for: SQL Joins, Regex, CSS Flexbox/Grid, AST/Parsers, Bitwise Math, JWTs, Transformers/Prompt Tokens.*
-```text
-┌─────────────────────────────────────────────────────────────────────────┐
-│  Interactive Input / Token Ribbon / Query Composer (Live Editable)      │
-├───────────────────────────────────┬─────────────────────────────────────┤
-│  Visual Structure / Venn / Beams  │  Live Computed Output / Probabilities│
-│  (Morphs on every keystroke/click)│  (Rows, Softmax Bars, AST, DOM Box) │
-└───────────────────────────────────┴─────────────────────────────────────┘
-```
-
-### Topology B: The Interactive Graph / DAG Command Sandbox
-*Use for: Git Rebase vs. Merge, B+ Trees, DOM Diffing, Garbage Collection, State Machines.*
-```text
-┌─────────────────────────────────────────────────────────────────────────┐
-│  Domain Command Bar: [ + git commit (main) ] [ + git commit (feat) ]    │
-│                      [ ⚡ git rebase main ]  [ 🔀 git merge ]  [ ↺ Undo ]│
-├─────────────────────────────────────────────────────────────────────────┤
-│  Full-Width Interactive SVG/Canvas DAG Stage (Click nodes to inspect,   │
-│  watch cloned C3' -> C4' nodes animate with spring physics)             │
-├─────────────────────────────────────────────────────────────────────────┤
-│  Live Git Ref / Pointer Readout (HEAD -> feature -> e4a91c) & Diff Log  │
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
-### Topology C: The 60fps Physics Stage + Live Telemetry Oscilloscope
-*Use for: Rate Limiters, TCP Congestion, Load Balancers, Thread Pools, Backpressure, Springs.*
-```text
-┌─────────────────────────────────────────┬───────────────────────────────┐
-│  60fps High-DPI <canvas> Particle Stage │  Live Scrolling Oscilloscope  │
-│  (Click canvas to spawn/block entities) │  + Real-Time Metric Gauges    │
-├─────────────────────────────────────────┴───────────────────────────────┤
-│  Tactile Hardware Deck: Sliders + Mode Switches + Hold-to-Burst Trigger │
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
-### Topology D: The Editorial Scrollytelling Essay (`ciechanow.ski` / `samwho.dev`)
-*Use for: Deep foundational concepts, Math/Geometry, Physics, End-to-End System Deep Dives.*
-- Warm cream paper (`#faf6ef`) with serif headings, short narrative paragraphs, and **2–3 distinct full-width dark interactive figures** embedded inline as the reader scrolls.
+> **THE GOLDEN RULE**: People ask for Interactive HTML because **a moving picture is 10× easier to understand than text**.
+> - **85% of the screen** must be **ONE spacious, uncluttered visual stage** (`<canvas>` or `<svg>`).
+> - **Almost zero text**: 1 short title, 1 compact control bar, and 1 single-line live caption (`≤ 20 words`).
+> - **Object Permanence**: Never draw a static "Input Table" on the left and a separate "Output Table" on the right. Put the objects on **one stage** and **animate them physically gliding, snapping together, splitting, or fading out** using 60fps spring physics!
 
 ---
 
-## 2. Composable Micro-Engine Primitives (Vanilla JS, Zero Dependencies)
+## 1. The Clean Single-Stage Layout Skeleton
+
+```text
+┌─────────────────────────────────────────────────────────────────────────┐
+│  Title + 1-Line Intuition Subtitle (<= 18 words)            [🌓 Theme]  │
+├─────────────────────────────────────────────────────────────────────────┤
+│  Compact Control Pill Bar: [ Mode 1 ] [ Mode 2 ] [ Mode 3 ]   [ Slider ]│
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│                                                                         │
+│               ONE SPACIOUS 60FPS VISUAL STAGE (85% HEIGHT)              │
+│       Objects physically glide, snap together, split, or bounce!        │
+│       Click or drag objects directly on the stage to mutate them.       │
+│                                                                         │
+│                                                                         │
+├─────────────────────────────────────────────────────────────────────────┤
+│  1-Line Live Formula / SQL / Status Bar (<= 20 words)                   │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 2. Minimal-Chrome CSS Starter (`<style>`)
+
+```css
+:root, [data-theme="dark"] {
+  --bg: #070a12;
+  --surface: #111827;
+  --surface-2: #1e293b;
+  --stage-bg: #04070d;
+  --border: rgba(148, 163, 184, 0.16);
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --cyan: #38bdf8;
+  --violet: #a78bfa;
+  --emerald: #34d399;
+  --rose: #fb7185;
+  --amber: #fbbf24;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme="light"] {
+  --bg: #faf7f2;
+  --surface: #ffffff;
+  --surface-2: #f1ece1;
+  --stage-bg: #0b101d;
+  --border: rgba(28, 25, 23, 0.12);
+  --text: #1c1917;
+  --text-muted: #6b6358;
+  --cyan: #2563eb;
+  --violet: #7c3aed;
+  --emerald: #059669;
+  --rose: #e11d48;
+  --amber: #d97706;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  padding: 18px 20px 28px;
+  max-width: 1060px;
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+}
+```
+
+---
+
+## 3. Core 60fps Object-Permanence Primitives
 
 ### Primitive 1: Crisp Retina `<canvas>` Setup
-Always scale `<canvas>` by `window.devicePixelRatio` so text, curves, and particles look razor-sharp:
 ```javascript
 function setupHiDPI(canvas) {
   const dpr = window.devicePixelRatio || 1;
@@ -67,54 +96,22 @@ function setupHiDPI(canvas) {
 }
 ```
 
-### Primitive 2: Weighted Bezier Attention / Dependency Beams (SVG)
-Great for **Transformer Self-Attention**, **Graph Dependencies**, **Pointer References**, or **Network Flows** where line thickness and glow opacity scale with weight `w ∈ [0, 1]`:
-```javascript
-function renderWeightedBezierArc({ x1, y1, x2, y2, weight, color = '#38bdf8', label = '' }) {
-  const mx = (x1 + x2) / 2;
-  const arcHeight = Math.min(110, Math.abs(x2 - x1) * 0.42 + 28);
-  const my = Math.min(y1, y2) - arcHeight;
-  const pathD = `M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}`;
-  const strokeW = (0.8 + weight * 6.5).toFixed(2);
-  const opacity = (0.12 + weight * 0.85).toFixed(2);
-  return `
-    <g class="weighted-arc">
-      <path d="${pathD}" fill="none" stroke="${color}" stroke-width="${strokeW}"
-            stroke-linecap="round" opacity="${opacity}" />
-      ${weight > 0.18 && label ? `
-        <text x="${mx}" y="${my + arcHeight * 0.42}" text-anchor="middle"
-              fill="${color}" font-size="10" font-family="ui-monospace, monospace" font-weight="700">
-          ${label}
-        </text>
-      ` : ''}
-    </g>
-  `;
-}
-```
+### Primitive 2: 2D + Opacity + Scale Spring Physics (`stepSpringEntity`)
+Give every visual card/node/orb on the canvas `{ x, y, tx, ty, vx, vy, alpha, tAlpha }` and call `stepSpringEntity(item)` inside `requestAnimationFrame`! When the user switches modes (e.g., `INNER JOIN` → `LEFT JOIN`), simply update each card's target `(tx, ty, tAlpha)` and watch every card **physically glide across the screen and snap into its new place**:
 
-### Primitive 3: Real-Time Softmax / Temperature Probability Calculator
-Great for **LLM Token Sampling (`Temperature`, `Top-K`, `Top-P`)** or **Classification Logits**:
 ```javascript
-function computeSoftmaxWithTemp(logits, temperature = 1.0, topK = logits.length, topP = 1.0) {
-  const T = Math.max(0.05, temperature);
-  const scaled = logits.map(l => ({ ...l, scaledLogit: l.logit / T }));
-  const maxL = Math.max(...scaled.map(d => d.scaledLogit));
-  const exps = scaled.map(d => ({ ...d, expVal: Math.exp(d.scaledLogit - maxL) }));
-  const sumExp = exps.reduce((acc, d) => acc + d.expVal, 0);
-  return exps
-    .map(d => ({ ...d, prob: d.expVal / sumExp }))
-    .sort((a, b) => b.prob - a.prob)
-    .map((d, idx) => ({ ...d, keptByTopK: idx < topK }));
-}
-```
-
-### Primitive 4: Damped Spring Animator for Smooth Value/Position Transitions
-Use when animating nodes to new `(x, y)` coordinates in a graph, tree, or physical track:
-```javascript
-function stepSpring(current, target, velocity, stiffness = 180, damping = 14, dt = 1 / 60) {
-  const force = -stiffness * (current - target) - damping * velocity;
-  const nextVel = velocity + force * dt;
-  const nextPos = current + nextVel * dt;
-  return { pos: nextPos, vel: nextVel };
+function stepSpringEntity(ent, stiffness = 170, damping = 16, dt = 1 / 60) {
+  const fx = -stiffness * (ent.x - ent.tx) - damping * (ent.vx || 0);
+  const fy = -stiffness * (ent.y - ent.ty) - damping * (ent.vy || 0);
+  ent.vx = (ent.vx || 0) + fx * dt;
+  ent.vy = (ent.vy || 0) + fy * dt;
+  ent.x += ent.vx * dt;
+  ent.y += ent.vy * dt;
+  if (ent.tAlpha !== undefined) {
+    ent.alpha = (ent.alpha ?? 1) + (ent.tAlpha - (ent.alpha ?? 1)) * 0.16;
+  }
+  if (ent.tScale !== undefined) {
+    ent.scale = (ent.scale ?? 1) + (ent.tScale - (ent.scale ?? 1)) * 0.18;
+  }
 }
 ```

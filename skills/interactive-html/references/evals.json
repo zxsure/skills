@@ -1,5 +1,5 @@
 {
-  "description": "Evaluation benchmarks for the interactive-html (Answer Me With Interactive HTML) skill, verifying intent-driven adaptive layouts, domain-native interactive controls, real vanilla-JS micro-algorithms, 60fps canvas/SVG simulations, and sandbox compliance without cookie-cutter templates.",
+  "description": "Evaluation benchmarks for the interactive-html (Answer Me With Interactive HTML) skill, verifying intent-driven adaptive layouts, macro page topology diversity, end-to-end causal wiring across stages, live user inputs alongside presets, Tangle-style scrubbable prose, real vanilla-JS micro-algorithms, 60fps canvas/SVG simulations, and sandbox compliance.",
   "evals": [
     {
       "id": 1,
@@ -7,7 +7,7 @@
       "prompt": "answer me with interactive html: what is the difference between git merge and git rebase, and why does rebase rewrite commit hashes?",
       "audience": "Software Engineer",
       "assertions": [
-        "Uses a Graph/DAG Command Sandbox topology tailored to Git version history rather than a generic slide viewer",
+        "Uses a Graph/DAG Command Sandbox topology tailored to Git version history rather than a generic slide viewer or stacked dark cards",
         "Provides domain-native Git controls (e.g., '+ Commit on main', '+ Commit on feature', 'git merge', 'git rebase main', and 'Reset/Undo')",
         "Maintains a real commit DAG in JS and visually animates how rebase clones feature commits (e.g. C3 -> C3') onto the tip of main with new SHA hashes while dimming orphaned commits",
         "Shows live branch ref pointers (HEAD, main, feature) and explains the Golden Rule of Rebasing",
@@ -46,6 +46,17 @@
         "Renders a side-by-side Disk Page I/O Race comparing sequential heap page scans against a 3-hop B+ Tree traversal",
         "Includes a live 'Bring Your Own Keys' B+ Tree insertion sandbox that demonstrates 50/50 leaf page splits and separator promotion",
         "Includes an interactive Query Planner selectivity cost-crossover curve showing when Sequential Scan beats random Index I/O"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "rag-causally-wired-pipeline-studio",
+      "prompt": "what is RAG? answer me with interactive html",
+      "audience": "AI / Full-Stack Engineer",
+      "assertions": [
+        "Uses a Causally Wired Flow-Graph Pipeline topology where Stage 1 (Document Chunking & Overlap), Stage 2 (2D Vector Embedding & Cosine Similarity Search), and Stage 3 (Augmented Prompt Assembly & Cited Generation) share a single reactive state",
+        "Supports typing a custom live user query in addition to 1-click preset questions, plus Tangle-style scrubbable inline numbers in the narrative",
+        "Changing chunk size/overlap in Stage 1 or dragging the Query Vector [Q] in Stage 2 dynamically updates the retrieved chunks and rewrites the assembled <context> prompt and cited answer in Stage 3"
       ]
     }
   ]

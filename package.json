@@ -1,10 +1,13 @@
 {
   "name": "zxsure-skills",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Curated skills for AI coding agents: WTF (Walk Through Foundations), Interactive HTML (Answer Me With Interactive HTML), and more",
   "repository": {
     "type": "git",
     "url": "https://github.com/zxsure/skills"
+  },
+  "scripts": {
+    "test": "node skills/interactive-html/scripts/verify-html.mjs --self-test"
   },
   "license": "MIT",
   "keywords": [

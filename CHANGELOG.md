@@ -5,6 +5,18 @@ All notable changes to the `skills` repository will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-10-21
+
+### Added
+- Added formal **Acceptance Criteria & 100-Point Quantitative Craft Rubric** (`skills/interactive-html/references/acceptance-criteria.md`) defining 5 zero-tolerance Hard Gates (HG-1..HG-5) and a 100-point scoring rubric (`>= 85/100` required to pass).
+- Added zero-dependency **Automated CLI Acceptance Verifier & Test Runner** (`skills/interactive-html/scripts/verify-html.mjs`, wired to `npm test`) that compiles inline `<script>` blocks via `vm.Script`, audits sandbox safety, measures interactive modality diversity (`>= 3` modalities), checks HiDPI/motion craft, and scores causal state wiring.
+
+### Changed
+- Refined `interactive-html` around **Visual-First Simplicity, Single Spacious Stage & Object-Permanence Motion**:
+  - **Banned 3-Column Cramped Grids & Text Bloat (`HG-4`)**: `verify-html.mjs` now rejects 3-column side-by-side dashboard layouts (`1fr 1fr 1fr`) and pages exceeding `85` words of `<p>` prose so that 85%+ of the viewport is dedicated to one self-explanatory animated stage.
+  - **Object-Permanence Spring Choreography**: Replaced static "Before/After" tables with a single 60fps spring-animated stage where cards/nodes physically glide, magnetically snap together, attach to `[NULL]` ghost blocks, or drop out.
+  - Updated `CONTEXT.md`, `docs/interactive-html.md`, and `skills/interactive-html/references/evals.json`.
+
 ## [1.2.0] - 2026-10-20
 
 ### Changed
