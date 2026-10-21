@@ -5,6 +5,16 @@ All notable changes to the `skills` repository will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-10-21
+
+### Changed
+- Refined `interactive-html` with **End-to-End Causal Wiring, Macro Page Topologies & Tangle Scrubbable Prose**:
+  - **End-to-End Causal Wiring**: Mandated a single shared reactive pipeline state across multi-stage explainers (e.g., mutating document chunk size/overlap in Stage 1 dynamically updates Stage 2's 2D vector embeddings and Stage 3's assembled prompt and cited answer).
+  - **4 Macro Page Topologies**: Added distinct outer page shells (Causally Wired Flow-Graph Pipeline, Split-Pane IDE Workbench, Editorial Magazine Essay, and 60fps Telemetry/Race Arena) to prevent generic stacked-card layouts.
+  - **Tangle-Style Scrubbable Inline Prose (`bindScrubbableNumbers`)**: Added draggable inline numbers (`[ 16 words ⟷ ]`) embedded directly inside narrative sentences.
+  - **Live Custom Input + 5-Point Self-Refinement Gate**: Required live user inputs alongside presets and a 5-point self-audit checklist before delivering any generated `.html` file.
+  - Updated `CONTEXT.md`, `docs/interactive-html.md`, and `skills/interactive-html/references/evals.json`.
+
 ## [1.2.0] - 2026-10-20
 
 ### Changed

@@ -1,38 +1,38 @@
 # Interactive HTML (`interactive-html`) — Deep Dive & Usage Guide
 
-> *"Every technical question has its own natural interactive medium. Never force two different topics into the same UI shell."*
+> *"Every technical question has its own natural interactive medium and macro page architecture. Never force two different topics into the same UI shell, and never build isolated widgets that don't talk to each other."*
 
-`interactive-html` is a specialized skill for AI coding agents that answers technical questions by building a **bespoke, self-contained `.html` interactive playground** ("Explorable Explanation") whose **layout topology, visual aesthetic, and interactive controls are dynamically tailored to the exact question the user asked**.
+`interactive-html` is a specialized skill for AI coding agents that answers technical questions by building a **bespoke, self-contained `.html` interactive playground** ("Explorable Explanation") whose **macro page topology, visual aesthetic, in-browser algorithm, and interactive controls are dynamically tailored to the exact question the user asked**.
 
 ---
 
 ## Intent-Driven Adaptive Architecture (How the Skill Adapts to Your Prompt)
 
-Instead of stamping out a single rigid template, `interactive-html` diagnoses the **conceptual shape** of your question and selects the best-fit interactive paradigm:
+Instead of stamping out a single rigid template, `interactive-html` diagnoses the **conceptual shape** of your question and selects both the **Interactive Paradigm** and the **Macro Page Topology**:
 
 ```mermaid
 flowchart LR
     Prompt["User Question"] --> Router{"Question Shape?"}
-    Router -->|Syntax / SQL / Regex / CSS| Workbench["1. Live Bi-Directional Workbench<br/>(Editable code/query + live Venn/box/AST morphing)"]
-    Router -->|Git / Trees / Graphs / GC| DAG["2. Interactive Graph & DAG Sandbox<br/>(Execute real git rebase / tree splits / undo history)"]
-    Router -->|Traffic / Queues / Physics| Sim60["3. 60fps Particle Stage + Live Oscilloscope<br/>(Hold-to-burst, click canvas, real-time waveforms)"]
-    Router -->|System A vs. System B| Arena["4. Head-to-Head Workload Arena<br/>(Simultaneous A/B race under tunable workloads)"]
-    Router -->|AI / Math / Geometry| Matrix["5. Direct-Manipulation 2D / Token Playground<br/>(Clickable attention beams, softmax T slider, 2D drag)"]
-    Router -->|Protocols / Handshakes| Trace["6. Interactive Wire & Fault Debugger<br/>(Drop packets, tamper tokens, time-travel trace)"]
+    Router -->|Multi-Stage Pipeline<br/>RAG / Compilers / HTTP| Pipeline["1. Causally Wired Flow-Graph Pipeline<br/>(Stage 1 ──●──▶ Stage 2 ──●──▶ Stage 3)"]
+    Router -->|Syntax / SQL / Regex / CSS| Workbench["2. Split-Pane IDE Workbench<br/>(Live input editor + Venn/box/AST morphing)"]
+    Router -->|Git / Trees / Graphs / GC| DAG["3. Interactive Graph & DAG Sandbox<br/>(Execute real git rebase / tree splits / undo)"]
+    Router -->|Traffic / Queues / Physics| Sim60["4. 60fps Particle Stage + Live Oscilloscope<br/>(Hold-to-burst, click canvas, real-time waveforms)"]
+    Router -->|System A vs. System B| Arena["5. Head-to-Head Workload Arena<br/>(Simultaneous A/B race under tunable workloads)"]
+    Router -->|Math / Geometry / Essay| Essay["6. Editorial Magazine Essay + Tangle Prose<br/>(Warm paper, scrubbable inline numbers, 2D drag)"]
 ```
 
 ---
 
-## Why This Beats Cookie-Cutter HTML Visualizers
+## Four Pillars of High-Craft Explorable Explanations
 
-1. **Zero Boilerplate Chrome**:
-   - A `git rebase` question gets an interactive **Git Commit DAG Terminal** where you click `+ git commit`, `⚡ git rebase main`, and `🔀 git merge` and watch commit nodes clone into `C3'` with new SHA hashes.
-   - An LLM question gets a **Live Token Self-Attention & Softmax Temperature Workbench** where you click words in a prompt to see weighted attention arcs and drag `Temperature (T)` / `Top-K` to reshape real token probabilities.
-   - A rate-limiter question gets a **60fps Particle Physics Stream + Live Scrolling Oscilloscope**.
-2. **Real Micro-Algorithms in Vanilla JS**:
-   - Controls execute real domain math and state transitions in the browser—never fake text swaps.
-3. **Domain-Matched Visual Personalities**:
-   - Adapts between **Warm Editorial Paper (`ciechanow.ski` style)**, **Developer Terminal / Git Workbench**, **Cyber-Telemetry Command Center**, and **Blueprint CAD Studio**.
+1. **End-to-End Causal Wiring (Zero Isolated Islands)**:
+   - Every stage on the page shares a **single reactive domain state**. For example, in a RAG explainer, changing `Chunk Size` or `Overlap` in Stage 1 dynamically re-slices the knowledge base, re-plots the chunks in Stage 2's 2D Vector Map, and re-assembles the `<context>` prompt and cited LLM answer in Stage 3!
+2. **Live Custom Input + Curated Presets**:
+   - Whenever a topic processes queries, strings, keys, arrays, or rules, users can both click curated presets and **type their own live input** to watch the real vanilla-JS micro-algorithm evaluate it in real time.
+3. **Tangle-Style Scrubbable Inline Prose**:
+   - Narrative paragraphs embed draggable inline numbers (`[ 16 words ⟷ ]`) so readers can scrub parameters directly inside the text.
+4. **Mandatory 5-Point Self-Refinement Gate**:
+   - Before delivering the file, the agent audits Causal Connectivity, Macro Topology Diversity, Live Input Support, 60fps Retina Polish, and Sandbox Compliance.
 
 ---
 
@@ -40,15 +40,15 @@ flowchart LR
 
 ### Natural Language Prompts
 ```text
+answer me with interactive html: what is RAG and how do chunking and vector search work together?
 answer me with interactive html: git rebase vs git merge
 explain how transformer self-attention and temperature sampling work in interactive html
-build an interactive html playground for SQL INNER vs LEFT vs FULL OUTER joins
 ```
 
 ### Slash Command Prompts
 ```text
+/interactive-html rag pipeline
 /interactive-html git rebase vs merge
-/interactive-html transformer self-attention and temperature
 /interactive-html token bucket vs leaky bucket rate limiting
 ```
 
