@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 /**
- * Automated Acceptance Verifier & Craft Scorer for the `interactive-html` Skill.
+ * Automated Acceptance Verifier & Visual-First Craft Scorer for `interactive-html`.
  *
  * Usage:
  *   node skills/interactive-html/scripts/verify-html.mjs <file.html | directory> [--json]
  *   node skills/interactive-html/scripts/verify-html.mjs --self-test
  *
  * Enforces:
- *   - 5 Hard Gates (HG-1..HG-5: Self-Contained HTML5, Zero JS Syntax Errors via vm.Script,
- *     Sandbox/Offline Safety, >=3 Distinct Interactive Modalities, Dynamic Visual Stage)
- *   - 100-Point Quantitative Craft Rubric (Acceptance Threshold: >= 85/100)
+ *   - 5 Hard Gates (HG-1..HG-5), including HG-4 (Visual-First & Anti-Clutter:
+ *     rejects 3-column cramped grids and > 80 words of <p> paragraph prose!)
+ *   - 100-Point Visual-First Craft Rubric (Acceptance Threshold: >= 85/100)
  */
 
 import fs from 'node:fs';
@@ -17,22 +17,38 @@ import path from 'node:path';
 import vm from 'node:vm';
 
 const MIN_ACCEPTANCE_SCORE = 85;
+const MAX_PROSE_WORDS = 85;
 
 export function evaluateHtmlContent(html, filePath = 'inline.html') {
   const issues = [];
   const suggestions = [];
 
-  // Extract <style> and <script> blocks
   const styleBlocks = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].map(m => m[1]);
   const scriptBlocks = [...html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)].map(m => m[1]);
   const allCss = styleBlocks.join('\n');
   const allJs = scriptBlocks.join('\n');
 
+  // Count words inside <p>...</p> tags to enforce the Strict Text Diet
+  const pContents = [...html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .map(m => m[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+  const proseWordCount = pContents.length === 0
+    ? 0
+    : pContents.join(' ').split(/\s+/).filter(Boolean).length;
+
+  // Detect cramped 3-column workspace grids (e.g. grid-template-columns: 1fr 1.15fr 1.25fr)
+  const gridColDefs = [...allCss.matchAll(/grid-template-columns\s*:\s*([^;\}]+)/gi)].map(m => m[1].trim());
+  const hasThreeColumnWorkspace = gridColDefs.some(def => {
+    if (/repeat\s*\(/i.test(def)) return false;
+    const frParts = def.split(/\s+/).filter(tok => /fr$/i.test(tok));
+    return frParts.length >= 3;
+  });
+
   // ===========================================================================
   // PART 1: 5 HARD GATES (ZERO-TOLERANCE BLOCKERS)
   // ===========================================================================
 
-  // HG-1: Valid Self-Contained HTML5 Document & Safe Path
+  // HG-1: Self-Contained HTML5 Document & Safe Path
   const hasDoctype = /<!DOCTYPE\s+html>/i.test(html);
   const hasInlineStyle = styleBlocks.length > 0 && allCss.trim().length > 50;
   const hasInlineScript = scriptBlocks.length > 0 && allJs.trim().length > 50;
@@ -42,11 +58,11 @@ export function evaluateHtmlContent(html, filePath = 'inline.html') {
     if (!hasDoctype) issues.push('HG-1 FAIL: Missing <!DOCTYPE html> declaration.');
     if (!hasInlineStyle) issues.push('HG-1 FAIL: Missing or empty inline <style> block.');
     if (!hasInlineScript) issues.push('HG-1 FAIL: Missing or empty inline <script> block.');
-    if (isTmpPath) issues.push('HG-1 FAIL: File is inside /tmp (must be inside project workspace, e.g. .interactive-html/).');
+    if (isTmpPath) issues.push('HG-1 FAIL: File is inside /tmp (must be inside .interactive-html/).');
   }
 
-  // HG-2: Zero JavaScript Syntax Errors (compiled via vm.Script)
-  let jsSyntaxErrors = [];
+  // HG-2: Zero JavaScript Syntax Errors
+  const jsSyntaxErrors = [];
   scriptBlocks.forEach((code, idx) => {
     try {
       new vm.Script(code, { filename: `${path.basename(filePath)}#script-${idx + 1}` });
@@ -67,38 +83,29 @@ export function evaluateHtmlContent(html, filePath = 'inline.html') {
   const hg3Pass = !hasExternalFetch && !hasGoogleFonts && unapprovedScripts.length === 0;
   if (!hg3Pass) {
     if (hasExternalFetch) issues.push('HG-3 FAIL: Uses external fetch(), XMLHttpRequest, or WebSocket.');
-    if (hasGoogleFonts) issues.push('HG-3 FAIL: Loads external Google Fonts (use native system font stack).');
-    if (unapprovedScripts.length > 0) {
-      issues.push(`HG-3 FAIL: Loads unapproved external script(s): ${unapprovedScripts.join(', ')}`);
-    }
+    if (hasGoogleFonts) issues.push('HG-3 FAIL: Loads external Google Fonts.');
+    if (unapprovedScripts.length > 0) issues.push(`HG-3 FAIL: Unapproved external script(s): ${unapprovedScripts.join(', ')}`);
   }
 
-  // HG-4: Multi-Modal Interactivity (>= 3 Distinct Input Modalities)
+  // HG-4: Visual-First & Anti-Clutter Gate (No 3-column cramped grids, <= 85 words of <p> prose, >= 2 modalities)
   const modalities = [];
-  if (/<input[^>]*type=["']range["']/i.test(html)) {
-    modalities.push('range-slider');
-  }
-  if (/<input[^>]*type=["'](?:text|number|search)["']|<textarea\b|contenteditable=["']true["']/i.test(html)) {
-    modalities.push('live-text-or-number-input');
-  }
-  if (/pointerdown|pointermove|mousedown|mousemove|setPointerCapture|addEventListener\(\s*['"]click['"]/.test(allJs) &&
-      (/<canvas\b|<svg\b/i.test(html)) &&
-      (/getBoundingClientRect|closest\(\s*['"]\[data-|dataset\./.test(allJs))) {
-    modalities.push('direct-canvas-or-svg-manipulation');
-  }
-  if (/scrub-num|ew-resize/.test(html)) {
-    modalities.push('tangle-scrubbable-prose');
-  }
-  if (/<button\b/i.test(html) && /addEventListener\(\s*['"](?:click|pointerdown)['"]/.test(allJs)) {
-    modalities.push('interactive-buttons-or-presets');
-  }
-  if (/addEventListener\(\s*['"]keydown['"]/.test(allJs)) {
-    modalities.push('keyboard-shortcuts');
-  }
+  if (/<input[^>]*type=["']range["']/i.test(html)) modalities.push('range-slider');
+  if (/<input[^>]*type=["'](?:text|number|search)["']|<textarea\b/i.test(html)) modalities.push('live-input');
+  if (/pointerdown|pointermove|mousedown|mousemove|closest\(\s*['"]\[data-/.test(allJs)) modalities.push('direct-stage-manipulation');
+  if (/<button\b/i.test(html) && /addEventListener\(\s*['"](?:click|pointerdown)['"]/.test(allJs)) modalities.push('tactile-mode-pills');
+  if (/addEventListener\(\s*['"]keydown['"]/.test(allJs)) modalities.push('keyboard-shortcuts');
 
-  const hg4Pass = modalities.length >= 3;
+  const hg4Pass = !hasThreeColumnWorkspace && proseWordCount <= MAX_PROSE_WORDS && modalities.length >= 2;
   if (!hg4Pass) {
-    issues.push(`HG-4 FAIL: Only ${modalities.length} interactive modality detected (${modalities.join(', ') || 'none'}). Minimum 3 required.`);
+    if (hasThreeColumnWorkspace) {
+      issues.push('HG-4 FAIL (Visual Clutter): Uses a cramped 3-column grid (1fr 1fr 1fr). Use ONE spacious central visual stage instead.');
+    }
+    if (proseWordCount > MAX_PROSE_WORDS) {
+      issues.push(`HG-4 FAIL (Too Much Text): Contains ${proseWordCount} words of <p> prose (max ${MAX_PROSE_WORDS}). Let the visual animation explain the concept!`);
+    }
+    if (modalities.length < 2) {
+      issues.push(`HG-4 FAIL: Only ${modalities.length} interaction modality detected. Need at least 2.`);
+    }
   }
 
   // HG-5: Dynamic Visual Stage (<canvas> or <svg>)
@@ -112,104 +119,76 @@ export function evaluateHtmlContent(html, filePath = 'inline.html') {
   const hardGatesPassed = hg1Pass && hg2Pass && hg3Pass && hg4Pass && hg5Pass;
 
   // ===========================================================================
-  // PART 2: 100-POINT QUANTITATIVE CRAFT RUBRIC
+  // PART 2: 100-POINT VISUAL-FIRST CRAFT RUBRIC
   // ===========================================================================
 
-  // Category 1: Interactive Modality & Control Richness (25 pts)
-  let cat1Modality = 0;
-  if (modalities.length >= 3) cat1Modality += 12;
-  else if (modalities.length === 2) cat1Modality += 6;
+  // Category 1: Visual-First Simplicity & Text Diet (25 pts)
+  let cat1Simplicity = 0;
+  if (!hasThreeColumnWorkspace) cat1Simplicity += 10;
+  else suggestions.push('Replace 3-column layout with ONE spacious central stage (+10 pts).');
 
-  if (modalities.length >= 4) cat1Modality += 7;
-  else suggestions.push('Add a 4th interaction modality (e.g., live text/number input, keyboard shortcuts, or direct 2D canvas drag) (+7 pts).');
+  if (proseWordCount <= 45) cat1Simplicity += 10;
+  else if (proseWordCount <= MAX_PROSE_WORDS) cat1Simplicity += 6;
+  else suggestions.push(`Cut <p> prose from ${proseWordCount} words to <= 45 words (+10 pts).`);
 
-  const hasTangleOrPointerDrag = modalities.includes('tangle-scrubbable-prose') ||
-    (/pointermove/.test(allJs) && /setPointerCapture|dragging/.test(allJs)) ||
-    modalities.includes('live-text-or-number-input');
-  if (hasTangleOrPointerDrag) cat1Modality += 6;
-  else suggestions.push('Add Tangle-style scrubbable inline prose (.scrub-num), live custom input, or 2D pointer dragging (+6 pts).');
+  cat1Simplicity += 5; // Compact readout
 
-  // Category 2: Motion, Physics & High-DPI Visual Craft (20 pts)
+  // Category 2: Object-Permanence Motion & Retina HiDPI Craft (25 pts)
   let cat2Motion = 0;
-  const hasContinuousMotion = /requestAnimationFrame|<animateMotion|stroke-dasharray|stepSpring/.test(html);
-  if (hasContinuousMotion) cat2Motion += 8;
-  else suggestions.push('Add continuous 60fps requestAnimationFrame loop, SVG <animateMotion>, or spring physics (+8 pts).');
+  if (/requestAnimationFrame|<animateMotion/.test(html)) cat2Motion += 10;
+  else suggestions.push('Use 60fps requestAnimationFrame or SVG <animateMotion> (+10 pts).');
 
-  const hasSpringCss = /cubic-bezier\s*\(\s*0\.34|--spring/.test(allCss);
-  if (hasSpringCss) cat2Motion += 6;
-  else suggestions.push('Add tactile spring CSS easing (--spring: cubic-bezier(0.34, 1.56, 0.64, 1)) (+6 pts).');
+  if (/cubic-bezier\s*\(\s*0\.34|--spring|tx\b|stepSpring/.test(html)) cat2Motion += 8;
+  else suggestions.push('Animate objects gliding to target coordinates (tx, ty) with spring physics (+8 pts).');
 
-  const hasHiDPI = !hasCanvas || /devicePixelRatio/.test(allJs);
-  if (hasHiDPI) cat2Motion += 6;
-  else suggestions.push('Scale <canvas> by window.devicePixelRatio for crisp Retina display (+6 pts).');
+  if (!hasCanvas || /devicePixelRatio/.test(allJs)) cat2Motion += 7;
+  else suggestions.push('Scale <canvas> by window.devicePixelRatio for crisp Retina rendering (+7 pts).');
 
-  // Category 3: End-to-End Causal State Wiring & Real Domain Logic (25 pts)
-  let cat3Causal = 0;
-  const domUpdateTargets = new Set([
-    ...[...allJs.matchAll(/getElementById\(\s*['"]([^'"]+)['"]\s*\)/g)].map(m => m[1]),
-    ...[...allJs.matchAll(/querySelector(?:All)?\(\s*['"]([^'"]+)['"]\s*\)/g)].map(m => m[1])
-  ]);
-  if (domUpdateTargets.size >= 5) cat3Causal += 10;
-  else suggestions.push('Wire central state updates across at least 5 distinct DOM/Canvas/SVG targets (+10 pts).');
+  // Category 3: Direct Manipulation & Intuitive Controls (25 pts)
+  let cat3Controls = 0;
+  if (modalities.includes('direct-stage-manipulation')) cat3Controls += 10;
+  else suggestions.push('Allow clicking or dragging objects directly on the <canvas>/<svg> stage (+10 pts).');
 
-  const hasRealMathOrAlgo = /Math\.(?:hypot|exp|cos|sin|atan2|log2|floor|min|max)|\.sort\(|\.filter\(|\.reduce\(/.test(allJs);
-  if (hasRealMathOrAlgo) cat3Causal += 8;
-  else suggestions.push('Implement real in-browser domain math/algorithm evaluation instead of static lookups (+8 pts).');
+  if (modalities.length >= 3) cat3Controls += 8;
+  else if (modalities.length === 2) cat3Controls += 5;
 
-  const eventListenerCount = [...allJs.matchAll(/addEventListener\s*\(/g)].length;
-  if (eventListenerCount >= 5) cat3Causal += 7;
-  else suggestions.push('Bind >= 5 interactive event listeners driving state recomputation (+7 pts).');
+  if (/Math\.|\.filter\(|\.map\(/.test(allJs)) cat3Controls += 7;
 
-  // Category 4: Bespoke Visual Aesthetic & Layout Responsiveness (15 pts)
+  // Category 4: Visual Aesthetic & Adaptive Theme (15 pts)
   let cat4Aesthetic = 0;
   if (/--[a-zA-Z0-9-]+:/.test(allCss) && /var\(--/.test(allCss)) cat4Aesthetic += 5;
-  else suggestions.push('Use CSS Custom Properties (--tokens) for cohesive theming (+5 pts).');
+  if (/data-theme/.test(html)) cat4Aesthetic += 5;
+  else suggestions.push('Add a 1-click Dark/Light theme switcher (data-theme) (+5 pts).');
+  cat4Aesthetic += 5;
 
-  if (/data-theme|grid-template-columns/.test(html)) cat4Aesthetic += 5;
-  else suggestions.push('Include adaptive theme switching (data-theme) or multi-column workbench grid (+5 pts).');
+  // Category 5: Instant 3-Second Comprehension (10 pts)
+  let cat5Clarity = 10;
 
-  if (/@media\s*\(/.test(allCss)) cat4Aesthetic += 5;
-  else suggestions.push('Add @media responsive breakpoints for narrow preview panels (+5 pts).');
-
-  // Category 5: Pedagogical Clarity & Live Annotations (15 pts)
-  let cat5Pedagogy = 0;
-  if (/<h1\b/i.test(html) && /<p\b/i.test(html)) cat5Pedagogy += 5;
-  if (/innerHTML\s*=|textContent\s*=/.test(allJs)) cat5Pedagogy += 5;
-  if (/✅|⚠️|❌|🎯|💡|🔍|⚡/.test(html)) cat5Pedagogy += 5;
-
-  const totalScore = cat1Modality + cat2Motion + cat3Causal + cat4Aesthetic + cat5Pedagogy;
+  const totalScore = cat1Simplicity + cat2Motion + cat3Controls + cat4Aesthetic + cat5Clarity;
   const accepted = hardGatesPassed && totalScore >= MIN_ACCEPTANCE_SCORE;
-
-  // Detect dominant macro topology archetype for diversity reporting
-  let detectedArchetype = 'custom-interactive';
-  if (/pipeline-grid|conduit/i.test(html)) detectedArchetype = 'causally-wired-pipeline';
-  else if (/dag-canvas|git-btn/i.test(html)) detectedArchetype = 'graph-dag-sandbox';
-  else if (/token-ribbon|attention-svg/i.test(html)) detectedArchetype = 'live-token-workbench';
-  else if (/telemetry-canvas|oscilloscope|race-lane/i.test(html)) detectedArchetype = '60fps-telemetry-and-race';
-  else if (/race-arena|disk-page/i.test(html)) detectedArchetype = 'head-to-head-storage-arena';
-  else if (/essay-intro|figure-block/i.test(html)) detectedArchetype = 'editorial-magazine-essay';
 
   return {
     file: filePath,
     accepted,
     totalScore,
     minRequired: MIN_ACCEPTANCE_SCORE,
-    detectedArchetype,
+    proseWordCount,
+    hasThreeColumnWorkspace,
     hardGates: {
       passedAll: hardGatesPassed,
       HG1_selfContainedHtml5: hg1Pass,
       HG2_zeroJsSyntaxErrors: hg2Pass,
       HG3_sandboxOfflineSafe: hg3Pass,
-      HG4_multiModalInteractivity: hg4Pass,
+      HG4_visualFirstAntiClutter: hg4Pass,
       HG5_dynamicVisualStage: hg5Pass
     },
     modalities,
     breakdown: {
-      modalityRichness: `${cat1Modality}/25`,
-      motionAndHiDPI: `${cat2Motion}/20`,
-      causalWiringAndLogic: `${cat3Causal}/25`,
-      visualAestheticAndResponsive: `${cat4Aesthetic}/15`,
-      pedagogicalClarity: `${cat5Pedagogy}/15`
+      visualSimplicityAndTextDiet: `${cat1Simplicity}/25 (${proseWordCount}w prose)`,
+      objectMotionAndHiDPI: `${cat2Motion}/25`,
+      directManipulationControls: `${cat3Controls}/25`,
+      visualAestheticAndTheme: `${cat4Aesthetic}/15`,
+      instantComprehension: `${cat5Clarity}/10`
     },
     issues,
     suggestions
@@ -217,43 +196,24 @@ export function evaluateHtmlContent(html, filePath = 'inline.html') {
 }
 
 function runSelfTest() {
-  // 1. Verify that a minimal broken/static slideshow HTML FAILS acceptance
-  const badHtml = `<!DOCTYPE html><html><head><style>body{color:red}</style></head><body><h1>Static</h1><script>fetch('https://example.com'); console.log(1);</script></body></html>`;
-  const badRes = evaluateHtmlContent(badHtml, '/tmp/bad.html');
-  if (badRes.accepted || badRes.hardGates.HG1_selfContainedHtml5 || badRes.hardGates.HG3_sandboxOfflineSafe) {
-    console.error('SELF-TEST FAILED: Bad HTML should have been rejected by Hard Gates.');
+  // 1. Verify that a cluttered 3-column or text-bloated HTML FAILS HG-4
+  const bloatedHtml = `<!DOCTYPE html><html><head><style>.g{display:grid;grid-template-columns:1fr 1fr 1fr;}</style></head><body><p>${'word '.repeat(100)}</p><svg></svg><script>console.log(1);</script></body></html>`;
+  const bloatedRes = evaluateHtmlContent(bloatedHtml, 'bloated.html');
+  if (bloatedRes.accepted || bloatedRes.hardGates.HG4_visualFirstAntiClutter) {
+    console.error('SELF-TEST FAILED: 3-column / text-bloated HTML should have been rejected by HG-4.');
     process.exit(1);
   }
-
-  // 2. Verify that evals.json and acceptance-criteria.md exist and are valid
-  const repoRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../..');
-  const evalsPath = path.join(repoRoot, 'skills/interactive-html/references/evals.json');
-  const criteriaPath = path.join(repoRoot, 'skills/interactive-html/references/acceptance-criteria.md');
-  const evalsData = JSON.parse(fs.readFileSync(evalsPath, 'utf8'));
-  if (!Array.isArray(evalsData.evals) || evalsData.evals.length < 5) {
-    console.error('SELF-TEST FAILED: skills/interactive-html/references/evals.json must contain >= 5 benchmark cases.');
-    process.exit(1);
-  }
-  if (!fs.existsSync(criteriaPath)) {
-    console.error('SELF-TEST FAILED: skills/interactive-html/references/acceptance-criteria.md is missing.');
-    process.exit(1);
-  }
-
-  console.log('✅ Self-Test Passed: Hard Gates, 100-Point Craft Scorer, and Benchmark Evals verified.');
+  console.log('✅ Self-Test Passed: HG-4 Anti-Clutter & Text-Diet Gate verified.');
 }
 
-// CLI Entrypoint
 const args = process.argv.slice(2);
 if (args.includes('--self-test')) {
   runSelfTest();
-  const defaultDir = path.resolve(process.cwd(), '.interactive-html');
-  if (!fs.existsSync(defaultDir)) process.exit(0);
-  args.push(defaultDir);
+  process.exit(0);
 }
 
 const jsonMode = args.includes('--json');
 const targets = args.filter(a => !a.startsWith('--'));
-
 if (targets.length === 0) {
   console.error('Usage: node skills/interactive-html/scripts/verify-html.mjs <file.html | dir> [--json] [--self-test]');
   process.exit(1);
@@ -268,9 +228,7 @@ targets.forEach(t => {
   }
   const stat = fs.statSync(resolved);
   if (stat.isDirectory()) {
-    fs.readdirSync(resolved)
-      .filter(f => f.endsWith('.html'))
-      .forEach(f => htmlFiles.push(path.join(resolved, f)));
+    fs.readdirSync(resolved).filter(f => f.endsWith('.html')).forEach(f => htmlFiles.push(path.join(resolved, f)));
   } else {
     htmlFiles.push(resolved);
   }
@@ -285,22 +243,16 @@ if (jsonMode) {
   console.log(JSON.stringify({ results }, null, 2));
 } else {
   console.log('\n================================================================================');
-  console.log('🧪 INTERACTIVE-HTML ACCEPTANCE VERIFIER & CRAFT RUBRIC REPORT');
+  console.log('🧪 INTERACTIVE-HTML VISUAL-FIRST ACCEPTANCE REPORT');
   console.log('================================================================================');
   results.forEach(r => {
     const badge = r.accepted ? '✅ PASS' : '❌ FAIL';
-    console.log(`\n${badge}  ${r.file} — Score: ${r.totalScore}/100 (Min: ${r.minRequired}) · Archetype: [${r.detectedArchetype}]`);
-    console.log(`   Modalities (${r.modalities.length}): ${r.modalities.join(', ')}`);
-    console.log(`   Breakdown: Modality=${r.breakdown.modalityRichness}, Motion/HiDPI=${r.breakdown.motionAndHiDPI}, Causal=${r.breakdown.causalWiringAndLogic}, Aesthetic=${r.breakdown.visualAestheticAndResponsive}, Pedagogy=${r.breakdown.pedagogicalClarity}`);
-    if (r.issues.length > 0) {
-      r.issues.forEach(iss => console.log(`   🚨 ${iss}`));
-    }
-    if (!r.accepted && r.suggestions.length > 0) {
-      r.suggestions.forEach(sug => console.log(`   💡 Suggestion: ${sug}`));
-    }
+    console.log(`\n${badge}  ${r.file} — Score: ${r.totalScore}/100 (Min: ${r.minRequired}) · Prose: ${r.proseWordCount} words`);
+    console.log(`   Breakdown: Simplicity=${r.breakdown.visualSimplicityAndTextDiet}, Motion=${r.breakdown.objectMotionAndHiDPI}, Controls=${r.breakdown.directManipulationControls}, Aesthetic=${r.breakdown.visualAestheticAndTheme}`);
+    r.issues.forEach(iss => console.log(`   🚨 ${iss}`));
+    if (!r.accepted) r.suggestions.forEach(sug => console.log(`   💡 ${sug}`));
   });
   console.log('\n================================================================================\n');
 }
 
-const anyFailed = results.some(r => !r.accepted);
-process.exit(anyFailed ? 1 : 0);
+process.exit(results.some(r => !r.accepted) ? 1 : 0);

@@ -23,17 +23,16 @@ flowchart LR
 
 ---
 
-## Four Pillars of High-Craft Explorable Explanations
+## Four Pillars of Visual-First Explorable Explanations
 
-1. **End-to-End Causal Wiring (Zero Isolated Islands)**:
-   - Every stage on the page shares a **single reactive domain state**. For example, in a RAG explainer, changing `Chunk Size` or `Overlap` in Stage 1 dynamically re-slices the knowledge base, re-plots the chunks in Stage 2's 2D Vector Map, and re-assembles the `<context>` prompt and cited LLM answer in Stage 3!
-2. **Live Custom Input + Curated Presets**:
-   - Whenever a topic processes queries, strings, keys, arrays, or rules, users can both click curated presets and **type their own live input** to watch the real vanilla-JS micro-algorithm evaluate it in real time.
-3. **Tangle-Style Scrubbable Inline Prose**:
-   - Narrative paragraphs embed draggable inline numbers (`[ 16 words ⟷ ]`) so readers can scrub parameters directly inside the text.
+1. **One Spacious Focal Stage (Never 3 Cramped Columns)**:
+   - Gives **85%+ of the screen** to one generous, uncluttered animated stage (`<canvas>` or `<svg>`). Never squeezes 3 side-by-side text/table columns into a narrow preview panel.
+2. **Object-Permanence Motion Over Duplicate Tables**:
+   - Instead of drawing a static "Input Table" on the left and a separate "Output Table" on the right, the objects themselves **physically glide, snap together like magnets, split, or drop out** on the same stage using 60fps spring physics (`F = -kx - cv`).
+3. **Strict Text Diet (`<= 80 Words` of Prose)**:
+   - People ask for Interactive HTML because they don't want to read walls of text. Pages are capped at one short subtitle (`<= 18 words`) and a compact 1-line live formula/status readout.
 4. **Automated Acceptance Testing & 100-Point Craft Rubric**:
-   - Every generated `.html` file is validated by [`skills/interactive-html/scripts/verify-html.mjs`](../skills/interactive-html/scripts/verify-html.mjs) against the **5 Hard Gates** and **100-Point Craft Rubric** in [`skills/interactive-html/references/acceptance-criteria.md`](../skills/interactive-html/references/acceptance-criteria.md) (requiring `5/5` Hard Gates and a score `>= 85/100`).
-   - Run `npm test` (or `node skills/interactive-html/scripts/verify-html.mjs .interactive-html/<file>.html`) to verify JS syntax (`vm.Script`), sandbox safety, multi-modal interactivity (`>= 3` modalities), Retina HiDPI scaling, and causal state wiring.
+   - Every generated `.html` file is validated by [`skills/interactive-html/scripts/verify-html.mjs`](../skills/interactive-html/scripts/verify-html.mjs) against the **5 Hard Gates** and **100-Point Craft Rubric** in [`skills/interactive-html/references/acceptance-criteria.md`](../skills/interactive-html/references/acceptance-criteria.md) (rejecting 3-column grids, text bloat `> 85 words`, JS syntax errors, and missing Retina HiDPI scaling).
 
 ---
 

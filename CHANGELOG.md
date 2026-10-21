@@ -12,11 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added zero-dependency **Automated CLI Acceptance Verifier & Test Runner** (`skills/interactive-html/scripts/verify-html.mjs`, wired to `npm test`) that compiles inline `<script>` blocks via `vm.Script`, audits sandbox safety, measures interactive modality diversity (`>= 3` modalities), checks HiDPI/motion craft, and scores causal state wiring.
 
 ### Changed
-- Refined `interactive-html` with **End-to-End Causal Wiring, Macro Page Topologies & Tangle Scrubbable Prose**:
-  - **End-to-End Causal Wiring**: Mandated a single shared reactive pipeline state across multi-stage explainers (e.g., mutating document chunk size/overlap in Stage 1 dynamically updates Stage 2's 2D vector embeddings and Stage 3's assembled prompt and cited answer).
-  - **4 Macro Page Topologies**: Added distinct outer page shells (Causally Wired Flow-Graph Pipeline, Split-Pane IDE Workbench, Editorial Magazine Essay, and 60fps Telemetry/Race Arena) to prevent generic stacked-card layouts.
-  - **Tangle-Style Scrubbable Inline Prose (`bindScrubbableNumbers`)**: Added draggable inline numbers (`[ 16 words ⟷ ]`) embedded directly inside narrative sentences.
-  - **Live Custom Input + 5-Point Self-Refinement Gate**: Required live user inputs alongside presets and a 5-point self-audit checklist before delivering any generated `.html` file.
+- Refined `interactive-html` around **Visual-First Simplicity, Single Spacious Stage & Object-Permanence Motion**:
+  - **Banned 3-Column Cramped Grids & Text Bloat (`HG-4`)**: `verify-html.mjs` now rejects 3-column side-by-side dashboard layouts (`1fr 1fr 1fr`) and pages exceeding `85` words of `<p>` prose so that 85%+ of the viewport is dedicated to one self-explanatory animated stage.
+  - **Object-Permanence Spring Choreography**: Replaced static "Before/After" tables with a single 60fps spring-animated stage where cards/nodes physically glide, magnetically snap together, attach to `[NULL]` ghost blocks, or drop out.
   - Updated `CONTEXT.md`, `docs/interactive-html.md`, and `skills/interactive-html/references/evals.json`.
 
 ## [1.2.0] - 2026-10-20
